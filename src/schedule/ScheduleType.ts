@@ -1,5 +1,5 @@
-import { FlightType } from '../flight/FlightType'
 import { gql } from 'apollo-server-express'
+import { FlightType } from '../flight/FlightType'
 
 export type ScheduleType = {
   id: number
@@ -7,6 +7,7 @@ export type ScheduleType = {
   flights: FlightType[]
   standby: Date[]
   reserve: Date[]
+  calculation: number
 }
 
 export const ScheduleTypeDefs = gql`
@@ -20,5 +21,6 @@ export const ScheduleTypeDefs = gql`
     flights: [Flight]!
     standby: [Int]!
     reserve: [Int]!
+    calculation: Float
   }
 `
