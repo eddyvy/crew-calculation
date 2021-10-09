@@ -4,6 +4,8 @@ import { ApolloServer, gql } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import { config } from 'dotenv'
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge'
+import { startMongodbClient } from './mongodb/startMongodbClient'
+import { MongoClient } from 'mongodb'
 
 const run = async() => {
   const PORT = process.env.PORT
@@ -42,6 +44,12 @@ const run = async() => {
     resolvers,
     plugins: [ ApolloServerPluginDrainHttpServer({ httpServer }) ],
   })
+
+  await startMongodbClient(
+    new MongoClient(process.env.DB_URI!),
+    process.env.DB_NAME!,
+    [ 'users' ]
+  )
 
   await server.start()
   server.applyMiddleware({ app })

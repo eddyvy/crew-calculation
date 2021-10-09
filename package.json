@@ -38,6 +38,6 @@
     "express": "^4.17.1",
     "graphql": "^15.6.0",
     "graphql-tools": "^8.2.0",
-    "mongodb": "^4.1.2"
+    "mongodb": "^4.1.3"
   }
 }
