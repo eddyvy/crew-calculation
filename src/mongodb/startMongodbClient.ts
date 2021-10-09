@@ -4,7 +4,7 @@ export const startMongodbClient = async(
   client: MongoClient,
   DB_NAME: string,
   collections: string[]
-): Promise<({ mongoDb: Db, mongoCollections: Collection<Document>[] } | Error)> => {
+): Promise<{ mongoDb: Db, mongoCollections: Collection<Document>[] }> => {
   const mongoDb = client.db(DB_NAME)
   const mongoCollections = collections.map( (col) => mongoDb.collection(col))
   try {
@@ -12,7 +12,6 @@ export const startMongodbClient = async(
     console.log('Connected successfully to db')
     return { mongoDb, mongoCollections }
   } catch (error) {
-    console.error('Error connnecting to db\n', error)
-    return Error(`Error connecting db: ${error}`)
+    throw new Error(`Error connecting db: ${error}`)
   }
 }

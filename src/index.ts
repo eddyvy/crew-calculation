@@ -2,13 +2,18 @@ import http from 'http'
 import express from 'express'
 import { ApolloServer, gql } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
-import { config } from 'dotenv'
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge'
-import { startMongodbClient } from './mongodb/startMongodbClient'
 import { MongoClient } from 'mongodb'
+import getConstants from './common/getConstants'
+import { startMongodbClient } from './mongodb/startMongodbClient'
 
 const run = async() => {
-  const PORT = process.env.PORT
+  const {
+    PORT,
+    DB_URI,
+    DB_NAME,
+    dbNames,
+  } = getConstants()
   const app = express()
   const httpServer = http.createServer(app)
   const typeDefs1 = gql`
@@ -45,11 +50,7 @@ const run = async() => {
     plugins: [ ApolloServerPluginDrainHttpServer({ httpServer }) ],
   })
 
-  await startMongodbClient(
-    new MongoClient(process.env.DB_URI!),
-    process.env.DB_NAME!,
-    [ 'users' ]
-  )
+  await startMongodbClient(new MongoClient(DB_URI), DB_NAME, dbNames)
 
   await server.start()
   server.applyMiddleware({ app })
@@ -58,7 +59,6 @@ const run = async() => {
   return `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
 }
 
-config()
 run()
   .then(console.log)
-  .catch((error) => console.log('Error starting the server:', error))
+  .catch((error) => console.error('Error starting the server:', error))
