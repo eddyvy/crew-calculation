@@ -6,9 +6,9 @@ export type UserType = {
   id: number
   name: string
   email: string
-  company: string
-  salaryTable: SalaryTableType
-  schedule: ScheduleType[]
+  company?: string
+  salaryTable?: SalaryTableType
+  schedule?: ScheduleType[]
 }
 
 export const UserTypeDefs = gql`
@@ -22,6 +22,6 @@ export const UserTypeDefs = gql`
     email: String!
     company: String
     salaryTable: SalaryTable
-    schedule: Schedule
+    schedule: [Schedule]
   }
 `

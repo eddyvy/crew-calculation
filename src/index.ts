@@ -1,10 +1,10 @@
 import http from 'http'
 import express from 'express'
-import { ApolloServer, gql } from 'apollo-server-express'
+import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
-import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge'
 import { MongoClient } from 'mongodb'
-import getConstants from './common/getConstants'
+import constants from './common/constants'
+import schema from './common/schema'
 import { startMongodbClient } from './mongodb/startMongodbClient'
 
 const run = async() => {
@@ -13,40 +13,11 @@ const run = async() => {
     DB_URI,
     DB_NAME,
     dbNames,
-  } = getConstants()
+  } = constants
   const app = express()
   const httpServer = http.createServer(app)
-  const typeDefs1 = gql`
-      type Query {
-          hello: String
-      }
-  `
-  const typeDefs2 = gql`
-      type Query {
-          goodbye: String
-      }
-  `
-  const typeDefs = mergeTypeDefs([
-    typeDefs1,
-    typeDefs2,
-  ])
-  const resolver1 = {
-    Query: {
-      hello: () => 'Hello world!',
-    },
-  }
-  const resolver2 = {
-    Query: {
-      goodbye: () => 'GoodBye world!',
-    },
-  }
-  const resolvers = mergeResolvers([
-    resolver1,
-    resolver2,
-  ])
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     plugins: [ ApolloServerPluginDrainHttpServer({ httpServer }) ],
   })
 

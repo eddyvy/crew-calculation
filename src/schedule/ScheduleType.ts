@@ -7,7 +7,7 @@ export type ScheduleType = {
   flights: FlightType[]
   standby: Date[]
   reserve: Date[]
-  calculation: number
+  calculation?: number
 }
 
 export const ScheduleTypeDefs = gql`
@@ -19,8 +19,8 @@ export const ScheduleTypeDefs = gql`
     id: ID!
     month: Int!
     flights: [Flight]!
-    standby: [Int]!
-    reserve: [Int]!
+    standby: [Float]!
+    reserve: [Float]!
     calculation: Float
   }
 `

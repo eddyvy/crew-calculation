@@ -1,11 +1,18 @@
 import { gql } from 'apollo-server-express'
 
+export type Airport = {
+  id: number,
+  code: string,
+  isBase: boolean,
+  isNational: boolean,
+}
+
 export type FlightType = {
   id: number
   takeOff: Date
   landing: Date
-  departure: string
-  destination: string
+  departure: Airport
+  destination: Airport
 }
 
 export const FlightTypeDefs = gql`
@@ -15,9 +22,16 @@ export const FlightTypeDefs = gql`
   
   type Flight {
     id: ID!
-    takeOff: Int!
-    landing: Int!
-    departure: String!
-    destination: String!
+    takeOff: Float!
+    landing: Float!
+    departure: Airport!
+    destination: Airport!
+  }
+  
+  type Airport {
+      id: ID!
+      code: String!
+      isBase: Boolean!
+      isNational: Boolean!
   }
 `

@@ -6,17 +6,17 @@ export type SalaryTableType = {
   extraFlightTimeThreshold: number
   extraFlightTimeAmount: number // hourly
   standby: number // daily
-  office: number  // daily
-  freeDayLost: number // daily
-  trainingHour: number  // hourly
-  trainingHourCRM: number // hourly
-  plusSCC: number // flight
-  plusSpecialFlight: number // flight
-  plusBackBase: number  // flight
-  dietNational: number  // daily
-  dietInternational: number // daily
-  dietNationalNoSleep: number // daily
-  dietInternationalNoSleep: number  //daily
+  office?: number  // daily
+  freeDayLost?: number // daily
+  trainingHour?: number  // hourly
+  trainingHourCRM?: number // hourly
+  plusSCC?: number // flight
+  plusSpecialFlight?: number // flight
+  plusBackBase?: number  // flight
+  dietNational?: number  // daily
+  dietInternational?: number // daily
+  dietNationalNoSleep?: number // daily
+  dietInternationalNoSleep?: number  //daily
 }
 
 export const SalaryTableTypeDefs = gql`
