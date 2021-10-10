@@ -3,7 +3,7 @@ import { SalaryTableType } from '../salaryTable/SalaryTableType'
 import { ScheduleType } from '../schedule/ScheduleType'
 
 export type UserType = {
-  id: number
+  _id: string
   name: string
   email: string
   company?: string
@@ -19,10 +19,11 @@ export const UserTypeDefs = gql`
   
   type Mutation {
     createUser(newUser: UserInput, password: String): User
+    updatePassword(oldPassword: String, newPassword: String): User
   }
   
   type User {
-    id: ID!
+    _id: ID!
     name: String!
     email: String!
     company: String
@@ -31,7 +32,6 @@ export const UserTypeDefs = gql`
   }
   
   input UserInput {
-    id: ID!
     name: String!
     email: String!
     company: String

@@ -1,5 +1,6 @@
 import type { MongoClient } from 'mongodb'
 import type { CrudAdapter } from '../common/types'
+import { UserType } from '../user/UserType'
 
 export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapter => {
   const db = client.db(DB_NAME)
@@ -42,9 +43,10 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     }
   }
 
-  const updateOne = async<E, Q>(entityName: string, query: Q, entity: E): Promise<any | null> => {
+  const updateOne = async<E, Q>(entityName: string, query: Q, entity: E): Promise<E | null> => {
     try {
-      return await db.collection(entityName).updateOne(query, entity)
+      const { modifiedCount } = await db.collection(entityName).updateOne(query, { $set: entity })
+      return (modifiedCount > 0) ? entity : null
     } catch (error) {
       console.log('Error reading:', error)
       return null

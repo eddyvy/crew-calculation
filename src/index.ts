@@ -20,9 +20,11 @@ const run = async() => {
   const server = new ApolloServer({
     schema: schema(crudAdapter),
     context: ({ req }) => {
-      const token = req.headers.authorization || ''
-      const me = token ? jwt.verify(token, JWT_SECRET) : null
-      return { me }
+      // recover password
+      // const token = req.params.authorization
+      // const token = req.headers.authorization || null
+      // const me = token ? jwt.verify(token, JWT_SECRET) : null
+      return { me: { name: 'Ali', email: 'alipla@example.com' } }
     },
     plugins: [ ApolloServerPluginDrainHttpServer({ httpServer }) ],
   })
