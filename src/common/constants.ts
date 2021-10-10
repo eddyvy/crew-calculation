@@ -1,12 +1,25 @@
 import { config } from 'dotenv'
+import type { EntityType } from './types'
 
 config()
 
-const DB_ENTITIES = {
-  FLIGHTS: 'flights',
-  SALARY_TABLES: 'salaryTables',
-  SCHEDULES: 'schedules',
-  USERS: 'users',
+const DB_ENTITIES: Record<string, EntityType> = {
+  FLIGHTS: {
+    name: 'flights',
+    uniqueKey: null,
+  },
+  SALARY_TABLES: {
+    name: 'salaryTables',
+    uniqueKey: null,
+  },
+  SCHEDULES: {
+    name: 'schedules',
+    uniqueKey: null,
+  },
+  USERS: {
+    name: 'users',
+    uniqueKey:'email',
+  },
 }
 
 const checkEnv = (envConst: (string | undefined)): string => {

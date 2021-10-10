@@ -4,7 +4,7 @@ import type { CrudAdapter } from '../common/types'
 export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapter => {
   const db = client.db(DB_NAME)
 
-  const createOne = async<E>(entityName: string, entity: E): Promise<any | null> => {
+  const createOne = async<E>(entityName: string, entity: E): Promise<E | null> => {
     try {
       const { acknowledged } = await db.collection(entityName).insertOne(entity)
       return (acknowledged) ? entity : null
@@ -14,7 +14,7 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     }
   }
 
-  const createMany = async<E>(entityName: string, entities: E[]): Promise<any[] | null> => {
+  const createMany = async<E>(entityName: string, entities: E[]): Promise<E[] | null> => {
     try {
       const { acknowledged } =  await db.collection(entityName).insertMany(entities)
       return (acknowledged) ? entities : null

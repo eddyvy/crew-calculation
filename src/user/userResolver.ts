@@ -5,7 +5,7 @@ import type { UserType } from './UserType'
 
 export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
 
-  const usersDbName = CONSTANTS.DB_ENTITIES.USERS
+  const usersDbName = CONSTANTS.DB_ENTITIES.USERS.name
   const { createOne } = crudAdapter
 
   const getUser = (): UserType => ({
@@ -24,7 +24,7 @@ export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
 
   return {
     Query: {
-      user: getUser,
+      getUser: getUser,
     },
     Mutation: {
       createUser: createUserResolver,

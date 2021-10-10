@@ -9,8 +9,8 @@ import { startMongodbClient } from './mongodb/startMongodbClient'
 import { mongodbAdapter } from './mongodb/mongodbAdapter'
 
 const run = async() => {
-  const { PORT,  DB_URI,  DB_NAME } = CONSTANTS
-  const mongoClient = await startMongodbClient(new MongoClient(DB_URI))
+  const { PORT,  DB_URI,  DB_NAME, DB_ENTITIES } = CONSTANTS
+  const mongoClient = await startMongodbClient(new MongoClient(DB_URI), DB_NAME, DB_ENTITIES)
   const crudAdapter = mongodbAdapter(mongoClient, DB_NAME)
 
   const app = express()

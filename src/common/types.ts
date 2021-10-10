@@ -6,3 +6,8 @@ export type CrudAdapter = {
   updateOne:   <E, Q>(entityName: string, query: Q, entity: E) => Promise<any | null>
   deleteOne:   <Q>(entityName: string, query: Q)               => Promise<any | null>
 }
+
+export type EntityType = {
+  name: string
+  uniqueKey: string | null
+}
