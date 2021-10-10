@@ -11,3 +11,8 @@ export type EntityType = {
   name: string
   uniqueKey: string | null
 }
+
+export type Me = {
+  name: string
+  email: string
+}

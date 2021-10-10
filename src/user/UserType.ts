@@ -13,7 +13,8 @@ export type UserType = {
 
 export const UserTypeDefs = gql`
   type Query {
-    getUser: User
+    # Returns the token
+    authUser(email: String, password: String): String
   }
   
   type Mutation {
