@@ -1,16 +1,10 @@
-import type { Collection, Db, Document, MongoClient } from 'mongodb'
+import type { MongoClient } from 'mongodb'
 
-export const startMongodbClient = async(
-  client: MongoClient,
-  DB_NAME: string,
-  collections: string[]
-): Promise<{ mongoDb: Db, mongoCollections: Collection<Document>[] }> => {
-  const mongoDb = client.db(DB_NAME)
-  const mongoCollections = collections.map( (col) => mongoDb.collection(col))
+export const startMongodbClient = async(client: MongoClient): Promise<MongoClient> => {
   try {
     await client.connect()
     console.log('Connected successfully to db')
-    return { mongoDb, mongoCollections }
+    return client
   } catch (error) {
     throw new Error(`Error connecting db: ${error}`)
   }

@@ -16,6 +16,10 @@ export const UserTypeDefs = gql`
     user: User
   }
   
+  type Mutation {
+      newUser: User
+  }
+  
   type User {
     id: ID!
     name: String!

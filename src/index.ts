@@ -4,8 +4,9 @@ import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import { MongoClient } from 'mongodb'
 import constants from './common/constants'
-import schema from './common/schema'
+import { schema } from './common/schema'
 import { startMongodbClient } from './mongodb/startMongodbClient'
+import { mongodbAdapter } from './mongodb/mongodbAdapter'
 
 const run = async() => {
   const {
@@ -14,14 +15,16 @@ const run = async() => {
     DB_NAME,
     dbNames,
   } = constants
+  const mongoClient = await startMongodbClient(new MongoClient(DB_URI))
+  const crudAdapter = mongodbAdapter(mongoClient, DB_NAME)
+
   const app = express()
   const httpServer = http.createServer(app)
+
   const server = new ApolloServer({
-    schema,
+    schema: schema(crudAdapter),
     plugins: [ ApolloServerPluginDrainHttpServer({ httpServer }) ],
   })
-
-  await startMongodbClient(new MongoClient(DB_URI), DB_NAME, dbNames)
 
   await server.start()
   server.applyMiddleware({ app })
