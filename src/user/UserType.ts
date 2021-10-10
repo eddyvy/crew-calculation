@@ -17,7 +17,7 @@ export const UserTypeDefs = gql`
   }
   
   type Mutation {
-      newUser: User
+    createUser(newUser: UserInput, password: String): User
   }
   
   type User {
@@ -28,4 +28,12 @@ export const UserTypeDefs = gql`
     salaryTable: SalaryTable
     schedule: [Schedule]
   }
+  
+  input UserInput {
+    id: ID!
+    name: String!
+    email: String!
+    company: String
+  }
+  
 `

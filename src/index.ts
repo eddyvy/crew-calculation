@@ -3,18 +3,13 @@ import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
 import { MongoClient } from 'mongodb'
-import constants from './common/constants'
+import CONSTANTS from './common/constants'
 import { schema } from './common/schema'
 import { startMongodbClient } from './mongodb/startMongodbClient'
 import { mongodbAdapter } from './mongodb/mongodbAdapter'
 
 const run = async() => {
-  const {
-    PORT,
-    DB_URI,
-    DB_NAME,
-    dbNames,
-  } = constants
+  const { PORT,  DB_URI,  DB_NAME } = CONSTANTS
   const mongoClient = await startMongodbClient(new MongoClient(DB_URI))
   const crudAdapter = mongodbAdapter(mongoClient, DB_NAME)
 
