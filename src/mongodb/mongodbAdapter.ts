@@ -1,24 +1,25 @@
 import type { MongoClient } from 'mongodb'
 import type { CrudAdapter } from '../common/types'
-import { UserType } from '../user/UserType'
 
 export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapter => {
   const db = client.db(DB_NAME)
 
-  const createOne = async<E>(entityName: string, entity: E): Promise<E | null> => {
+  const createOne = async<I, E>(entityName: string, input: I): Promise<E | null> => {
     try {
-      const { acknowledged } = await db.collection(entityName).insertOne(entity)
-      return (acknowledged) ? entity : null
+      const { acknowledged, insertedId } = await db.collection(entityName).insertOne(input)
+      return (acknowledged) ? { _id: insertedId.toString(), ...input } as unknown as E : null
     } catch (error) {
       console.log('Error creating:', error)
       return null
     }
   }
 
-  const createMany = async<E>(entityName: string, entities: E[]): Promise<E[] | null> => {
+  const createMany = async<I, E>(entityName: string, inputs: I[]): Promise<E[] | null> => {
     try {
-      const { acknowledged } =  await db.collection(entityName).insertMany(entities)
-      return (acknowledged) ? entities : null
+      const { acknowledged, insertedIds } =  await db.collection(entityName).insertMany(inputs)
+      return (acknowledged)
+        ? inputs.map( (inp: I, index: number) => ({ _id: insertedIds[index].toString(), ...inp } as unknown as E))
+        : null
     } catch (error) {
       console.log('Error creating:', error)
       return null

@@ -11,6 +11,12 @@ export type UserType = {
   schedule?: ScheduleType[]
 }
 
+export type UserInputType = {
+  name: string
+  email: string
+  company?: string
+}
+
 export const UserTypeDefs = gql`
   type Query {
     # Returns the token

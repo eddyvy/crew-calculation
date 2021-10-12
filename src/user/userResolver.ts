@@ -2,7 +2,7 @@ import type { IResolvers } from '@graphql-tools/utils/Interfaces'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import type { CrudAdapter } from '../common/types'
-import type { UserType } from './UserType'
+import type { UserInputType, UserType } from './UserType'
 import CONSTANTS from '../common/constants'
 import { sendEmail } from '../email/sendEmail'
 
@@ -15,7 +15,7 @@ export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
   const askRecoverPassword = async(email: string): Promise<string> => {
     try {
       const userDB = await readOne(usersDbName, { email })
-      const token = jwt.sign({ name: userDB.name, email: userDB.email }, JWT_SECRET)
+      const token = jwt.sign({ _id: userDB._id.toString(), name: userDB.name, email: userDB.email }, JWT_SECRET)
       await sendEmail(email, token)
       return 'Email sent correctly'
     } catch (error) {
@@ -29,11 +29,11 @@ export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
     const isPassCorrect = await bcrypt.compare(password, userDB.password)
 
     return (isPassCorrect)
-      ? jwt.sign({ name: userDB.name, email: userDB.email }, JWT_SECRET)
+      ? jwt.sign({ _id: userDB._id.toString(), name: userDB.name, email: userDB.email }, JWT_SECRET)
       : null
   }
 
-  const createUser = async(newUser: UserType, password: string): Promise<(UserType | null)> => {
+  const createUser = async(newUser: UserInputType, password: string): Promise<(UserType | null)> => {
     const passwordHashed = await bcrypt.hash(password, SALT_ROUNDS)
     return await createOne(usersDbName, { ...newUser, password: passwordHashed })
   }

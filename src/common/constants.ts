@@ -23,7 +23,7 @@ const DB_ENTITIES: Record<string, EntityType> = {
   },
   USERS: {
     name: 'users',
-    uniqueKey:'email',
+    uniqueKey: null,
   },
 }
 

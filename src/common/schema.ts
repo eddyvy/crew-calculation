@@ -3,7 +3,7 @@ import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge'
 import { mergeSchemas } from '@graphql-tools/schema'
 import type { CrudAdapter } from './types'
 import { FlightTypeDefs } from '../flight/FlightType'
-import { FlightResolver } from '../flight/FlightResolver'
+import { flightResolver } from '../flight/FlightResolver'
 import { SalaryTableTypeDefs } from '../salaryTable/SalaryTableType'
 import { SalaryTableResolver } from '../salaryTable/SalaryTableResolver'
 import { ScheduleTypeDefs } from '../schedule/ScheduleType'
@@ -21,7 +21,7 @@ export const schema = (crudAdapter: CrudAdapter): GraphQLSchema => {
   ])
 
   const resolvers = mergeResolvers([
-    FlightResolver,
+    flightResolver(crudAdapter),
     SalaryTableResolver,
     ScheduleResolver,
     userResolver(crudAdapter),
