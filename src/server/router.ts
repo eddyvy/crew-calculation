@@ -1,7 +1,7 @@
 import { Express } from 'express'
-import ROUTES from './routes'
-import { recoverPasswordController } from '../user/recoverPasswordController'
+import routes from './routes'
+import { recoverPasswordController } from '../user/controller/recoverPasswordController'
 
 export const expressRouter = (app: Express): void => {
-  app.get(ROUTES.recoverPasswordWithToken, recoverPasswordController)
+  app.get(routes.recoverPasswordWithToken, recoverPasswordController)
 }

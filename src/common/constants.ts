@@ -1,14 +1,19 @@
 import { config } from 'dotenv'
-import type { EntityType } from './types'
-
-config()
+import type { AppEntities } from './types'
 
 const checkEnv = (envConst: (string | undefined)): string => {
   if (!envConst) throw new Error('Env constants error')
   return envConst
 }
 
-const DB_ENTITIES: Record<string, EntityType> = {
+config()
+
+export const PORT = checkEnv(process.env.PORT)
+export const DB_URI = checkEnv(process.env.DB_URI)
+export const DB_NAME = checkEnv(process.env.DB_NAME)
+export const JWT_SECRET = checkEnv(process.env.JWT_SECRET)
+
+export const DB_ENTITIES: AppEntities = {
   FLIGHTS: {
     name: 'flights',
     uniqueKey: null,
@@ -27,11 +32,4 @@ const DB_ENTITIES: Record<string, EntityType> = {
   },
 }
 
-export default {
-  PORT: checkEnv(process.env.PORT),
-  DB_URI: checkEnv(process.env.DB_URI),
-  DB_NAME: checkEnv(process.env.DB_NAME),
-  DB_ENTITIES,
-  JWT_SECRET: checkEnv(process.env.JWT_SECRET),
-  SALT_ROUNDS: 10,
-}
+export const SALT_ROUNDS = 10

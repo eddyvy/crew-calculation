@@ -22,9 +22,7 @@ export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
   })
 
   const useFlightResolvers = async(parent: any, args: any, context: any, info: any) => {
-    const { fieldName } = info
-
-    switch (fieldName) {
+    switch (info.fieldName) {
       case 'getFlightById':
         return (context.me)
           ? await getFlightById(args.flightId, context.me._id)
