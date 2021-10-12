@@ -28,7 +28,7 @@ export const DB_ENTITIES: AppEntities = {
   },
   USERS: {
     name: 'users',
-    uniqueKey: null,
+    uniqueKey: 'email',
   },
 }
 

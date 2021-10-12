@@ -11,12 +11,12 @@ export const updatePassword = async(
   updateOne: UpdateOne
 ): Promise<UserType | null> => {
 
-  const userDB = await readOne(DB_ENTITIES.USERS.name, { email })
+  const userDB = await readOne(DB_ENTITIES.USERS.name, { email }) as UserType & { password: string }
   const isPassCorrect = await bcrypt.compare(oldPassword, userDB.password)
 
   if (isPassCorrect) {
     const newPasswordHashed = await bcrypt.hash(newPassword, SALT_ROUNDS)
-    return await updateOne(DB_ENTITIES.USERS.name, { email }, { ...userDB, password: newPasswordHashed })
+    return await updateOne(DB_ENTITIES.USERS.name, { _id: userDB._id }, { password: newPasswordHashed })
   }
 
   return null

@@ -15,9 +15,20 @@ export type FlightType = {
   destination: Airport
 }
 
+export type FlightInput = {
+  takeOff: Date
+  landing: Date
+  departure: Airport
+  destination: Airport
+}
+
 export const FlightTypeDefs = gql`
   type Query {
     getFlightById(flightId: String): Flight
+  }
+  
+  type Mutation {
+      createFlight(newFlight: FlightInput): Flight
   }
   
   type Flight {
@@ -30,6 +41,19 @@ export const FlightTypeDefs = gql`
   }
   
   type Airport {
+    code: String!
+    isBase: Boolean!
+    isNational: Boolean!
+  }
+  
+  input FlightInput {
+    takeOff: Float!
+    landing: Float!
+    departure: AirportInput!
+    destination: AirportInput!
+  }
+  
+  input AirportInput {
     code: String!
     isBase: Boolean!
     isNational: Boolean!

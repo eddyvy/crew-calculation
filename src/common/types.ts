@@ -1,8 +1,8 @@
 export type CreateOne = <I, E>(entityName: string, input: I) => Promise<E | null>
 export type CreateMany = <I, E>(entityName: string, entities: I[]) => Promise<E[] | null>
-export type ReadOne = <Q>(entityName: string, query: Q) => Promise<any | null>
-export type ReadMany = <Q>(entityName: string, query: Q) => Promise<any[] | null>
-export type UpdateOne = <E, Q>(entityName: string, query: Q, entity: E) => Promise<E | null>
+export type ReadOne = <Q, E>(entityName: string, query: Q) => Promise<E | null>
+export type ReadMany = <Q, E>(entityName: string, query: Q) => Promise<E[]>
+export type UpdateOne = <Q, I, E>(entityName: string, query: Q, input: I) => Promise<E | null>
 export type DeleteOne = <Q>(entityName: string, query: Q) => Promise<any | null>
 
 export type CrudAdapter = {
