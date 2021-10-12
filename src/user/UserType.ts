@@ -15,6 +15,7 @@ export const UserTypeDefs = gql`
   type Query {
     # Returns the token
     authUser(email: String, password: String): String
+    askRecoverPassword(email: String): String
   }
   
   type Mutation {
