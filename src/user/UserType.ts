@@ -27,6 +27,7 @@ export const UserTypeDefs = gql`
   type Mutation {
     createUser(newUser: UserInput, password: String): User
     updatePassword(oldPassword: String, newPassword: String): User
+    updateUser(updatedUser: UserInput): UpdatedUser
   }
   
   type User {
@@ -36,6 +37,11 @@ export const UserTypeDefs = gql`
     company: String
     salaryTable: SalaryTable
     schedule: [Schedule]
+  }
+  
+  type UpdatedUser {
+      updatedUser: User
+      updatedToken: String
   }
   
   input UserInput {

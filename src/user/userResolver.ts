@@ -4,6 +4,7 @@ import { sendRecoverPasswordEmail } from './action/sendRecoverPasswordEmail'
 import { authUser } from './action/authUser'
 import { createUser } from './action/createUser'
 import { updatePassword } from './action/updatePassword'
+import { updateUser } from './action/updateUser'
 
 export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
 
@@ -21,6 +22,10 @@ export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
         return (context.me)
           ? await updatePassword(context.me.email, args.oldPassword, args.newPassword, readOne, updateOne)
           : null
+      case 'updateUser':
+        return (context.me)
+          ? await updateUser(args.updatedUser, context.me._id, updateOne)
+          : null
     }
   }
 
@@ -32,6 +37,7 @@ export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
     Mutation: {
       createUser: useUserResolvers,
       updatePassword: useUserResolvers,
+      updateUser: useUserResolvers,
     },
   }
 }
