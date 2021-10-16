@@ -7,6 +7,5 @@ export const createFlight = async(
   ownerId: string,
   createOne: CreateOne
 ): Promise<FlightType | null> => {
-
   return await createOne(DB_ENTITIES.FLIGHTS.name, { ownerId, ...newFlight })
 }

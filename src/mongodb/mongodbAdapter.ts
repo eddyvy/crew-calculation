@@ -1,13 +1,20 @@
-import type { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import type { CrudAdapter } from '../common/types'
 
 export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapter => {
   const db = client.db(DB_NAME)
 
+  const parseId = <Q>(query: Q & { _id?: string }): (Q & { _id: ObjectId }) | Q => {
+    const has_id = Object.keys(query).includes('_id')
+    return (has_id)
+      ? { ...query, _id: new ObjectId(query._id) }
+      : query
+  }
+
   const createOne = async<I, E>(entityName: string, input: I): Promise<E | null> => {
     try {
       const { insertedId } = await db.collection(entityName).insertOne(input)
-      return (insertedId) ? { _id: insertedId.toString(), ...input } as unknown as E : null
+      return (insertedId) ? { ...input, _id: insertedId.toString() } as unknown as E : null
     } catch (error) {
       console.log('Error creating:', error)
       return null
@@ -18,7 +25,7 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     try {
       const { insertedIds, insertedCount } =  await db.collection(entityName).insertMany(inputs)
       return (insertedCount > 0)
-        ? inputs.map( (inp: I, index: number) => ({ _id: insertedIds[index].toString(), ...inp } as unknown as E))
+        ? inputs.map( (inp: I, index: number) => ({ ...inp, _id: insertedIds[index].toString() } as unknown as E))
         : null
     } catch (error) {
       console.log('Error creating:', error)
@@ -28,9 +35,9 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
 
   const readOne = async<Q, E>(entityName: string, query: Q): Promise<E | null> => {
     try {
-      const entityDb = await db.collection(entityName).findOne(query)
+      const entityDb = await db.collection(entityName).findOne(parseId(query))
       return (entityDb)
-        ? { _id: entityDb._id.toString(), ...entityDb } as unknown as E
+        ? { ...entityDb, _id: entityDb._id.toString() } as unknown as E
         : null
     } catch (error) {
       console.log('Error reading:', error)
@@ -40,8 +47,8 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
 
   const readMany = async<Q, E>(entityName: string, query: Q): Promise<E[]> => {
     try {
-      const entities = await db.collection(entityName).find(query).toArray()
-      return entities.map((doc) => doc as E)
+      const entities = await db.collection(entityName).find(parseId(query)).toArray()
+      return entities.map((doc) => ({ ...doc, _id: doc._id.toString() } as unknown as E))
     } catch (error) {
       console.log('Error reading:', error)
       return []
@@ -50,7 +57,7 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
 
   const updateOne = async<Q, I, E>(entityName: string, query: Q, input: I): Promise<E | null> => {
     try {
-      const { value } = await db.collection(entityName).findOneAndUpdate(query, { $set: input })
+      const { value } = await db.collection(entityName).findOneAndUpdate(parseId(query), { $set: input })
       return value && value as E
     } catch (error) {
       console.log('Error reading:', error)
@@ -60,7 +67,7 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
 
   const deleteOne = async<Q>(entityName: string, query: Q): Promise<any | null> => {
     try {
-      return await db.collection(entityName).deleteOne(query)
+      return await db.collection(entityName).deleteOne(parseId(query))
     } catch (error) {
       console.log('Error reading:', error)
       return null

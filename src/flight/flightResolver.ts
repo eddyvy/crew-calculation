@@ -1,34 +1,17 @@
-import { FlightType } from './FlightType'
-import { CrudAdapter } from '../common/types'
-import { IResolvers } from '@graphql-tools/utils/Interfaces'
+import type { IResolvers } from '@graphql-tools/utils/Interfaces'
+import type { CrudAdapter } from '../common/types'
 import { createFlight } from './actions/createFlight'
+import { getFlightById } from './actions/getFlightById'
 
 export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
 
-  const { createOne } = crudAdapter
-
-  const getFlightById = (flightId: string, ownerId: string): FlightType => ({
-    _id: 'hashForId1',
-    ownerId: ownerId,
-    takeOff: new Date(2021, 1, 1, 12),
-    landing: new Date(2021, 1, 1, 13),
-    departure: {
-      code: 'MAD',
-      isBase: true,
-      isNational: true,
-    },
-    destination: {
-      code: 'PUJ',
-      isBase: false,
-      isNational: false,
-    },
-  })
+  const { createOne, readOne } = crudAdapter
 
   const useFlightResolvers = async(parent: any, args: any, context: any, info: any) => {
     switch (info.fieldName) {
       case 'getFlightById':
         return (context.me)
-          ? getFlightById(args.flightId, context.me._id)
+          ? getFlightById(args.flightId, context.me._id, readOne)
           : null
       case 'createFlight':
         return (context.me)
