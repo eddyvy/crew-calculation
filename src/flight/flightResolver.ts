@@ -5,10 +5,11 @@ import { createFlight } from './action/createFlight'
 import { getFlightById } from './action/getFlightById'
 import { updateFlightById } from './action/updateFlightById'
 import { AppContext } from '../common/types'
+import { deleteFlight } from './action/deleteFlight'
 
 export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
 
-  const { createOne, readOne, updateOne } = crudAdapter
+  const { createOne, readOne, updateOne, deleteOne } = crudAdapter
 
   const useFlightResolvers = async(parent: any, args: any, context: AppContext, info: any) => {
     switch (info.fieldName) {
@@ -19,6 +20,14 @@ export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
           args.flightId,
           context.me?.id,
           readOne
+        )
+      case 'deleteFlight':
+        return await authRequired(
+          context.me,
+          deleteFlight,
+          args.flightId,
+          context.me?.id,
+          deleteOne
         )
       case 'createFlight':
         return await authRequired(
@@ -46,6 +55,7 @@ export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
     },
     Mutation: {
       createFlight: useFlightResolvers,
+      deleteFlight: useFlightResolvers,
       updateFlightById: useFlightResolvers,
     },
   }

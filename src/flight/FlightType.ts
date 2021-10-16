@@ -1,9 +1,9 @@
 import { gql } from 'apollo-server-express'
 
 export type Airport = {
-  code: string,
-  isBase: boolean,
-  isNational: boolean,
+  code: string
+  isBase: boolean
+  isNational: boolean
 }
 
 export type FlightType = {
@@ -29,6 +29,7 @@ export const FlightTypeDefs = gql`
   
   type Mutation {
     createFlight(newFlight: FlightInput): Flight
+    deleteFlight(flightId: ID): Flight
     updateFlightById(flightId: ID, updatedFlight: FlightInput): Flight
   }
   
