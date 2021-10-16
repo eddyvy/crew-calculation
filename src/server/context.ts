@@ -1,10 +1,10 @@
 import type { Request } from 'express'
 import type { Context } from 'apollo-server-core'
 import jwt from 'jsonwebtoken'
+import type { AppContext, MeType } from '../common/types'
 import { JWT_SECRET } from '../common/constants'
-import type { MeType } from '../user/UserType'
 
-export const expressContext = (context: Context<{ req: Request }>): Context<{ me: MeType | null }> => {
+export const expressContext = (context: Context<{ req: Request }>): AppContext => {
   const { req } = context
   if (req.headers.authorization) {
     const token = req.headers.authorization.split('Bearer ')[1] || null
