@@ -24,11 +24,12 @@ export type FlightInput = {
 
 export const FlightTypeDefs = gql`
   type Query {
-    getFlightById(flightId: String): Flight
+    getFlightById(flightId: ID): Flight
   }
   
   type Mutation {
-      createFlight(newFlight: FlightInput): Flight
+    createFlight(newFlight: FlightInput): Flight
+    updateFlightById(flightId: ID, updatedFlight: FlightInput): Flight
   }
   
   type Flight {

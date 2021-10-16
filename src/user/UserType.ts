@@ -2,12 +2,6 @@ import { gql } from 'apollo-server-express'
 import { SalaryTableType } from '../salaryTable/SalaryTableType'
 import { ScheduleType } from '../schedule/ScheduleType'
 
-export type MeType = {
-  id: string
-  name: string
-  email: string
-}
-
 export type UserType = {
   id: string
   name: string
