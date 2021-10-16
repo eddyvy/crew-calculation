@@ -5,7 +5,7 @@ const getSchedule = (): ScheduleType => ({
   month: 9,
   flights: [
     {
-      _id: 'HashForFlight1',
+      id: 'HashForFlight1',
       ownerId: 'HashForOwnerId1',
       takeOff: new Date(2021, 1, 1, 12),
       landing: new Date(2021, 1, 1, 13),

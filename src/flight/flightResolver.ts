@@ -1,7 +1,7 @@
 import type { IResolvers } from '@graphql-tools/utils/Interfaces'
-import type { CrudAdapter } from '../common/types'
-import { createFlight } from './actions/createFlight'
-import { getFlightById } from './actions/getFlightById'
+import type { CrudAdapter } from '../database/DbTypes'
+import { createFlight } from './action/createFlight'
+import { getFlightById } from './action/getFlightById'
 
 export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
 
@@ -11,11 +11,11 @@ export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
     switch (info.fieldName) {
       case 'getFlightById':
         return (context.me)
-          ? getFlightById(args.flightId, context.me._id, readOne)
+          ? getFlightById(args.flightId, context.me.id, readOne)
           : null
       case 'createFlight':
         return (context.me)
-          ? createFlight(args.newFlight, context.me._id, createOne)
+          ? createFlight(args.newFlight, context.me.id, createOne)
           : null
     }
   }

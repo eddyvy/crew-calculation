@@ -1,5 +1,5 @@
 import { FlightInput, FlightType } from '../FlightType'
-import { CreateOne } from '../../common/types'
+import type { CreateOne } from '../../database/DbTypes'
 import { DB_ENTITIES } from '../../common/constants'
 
 export const createFlight = async(
@@ -7,5 +7,5 @@ export const createFlight = async(
   ownerId: string,
   createOne: CreateOne
 ): Promise<FlightType | null> => {
-  return await createOne(DB_ENTITIES.FLIGHTS.name, { ownerId, ...newFlight })
+  return await createOne(DB_ENTITIES.FLIGHTS.name, { ownerId, ...newFlight }) as FlightType
 }

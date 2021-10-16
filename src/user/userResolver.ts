@@ -1,5 +1,5 @@
 import type { IResolvers } from '@graphql-tools/utils/Interfaces'
-import type { CrudAdapter } from '../common/types'
+import type { CrudAdapter } from '../database/DbTypes'
 import { sendRecoverPasswordEmail } from './action/sendRecoverPasswordEmail'
 import { authUser } from './action/authUser'
 import { createUser } from './action/createUser'
@@ -24,7 +24,7 @@ export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
           : null
       case 'updateUser':
         return (context.me)
-          ? await updateUser(args.updatedUser, context.me._id, updateOne)
+          ? await updateUser(args.updatedUser, context.me.id, updateOne)
           : null
     }
   }

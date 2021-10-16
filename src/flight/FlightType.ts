@@ -7,7 +7,7 @@ export type Airport = {
 }
 
 export type FlightType = {
-  _id: string
+  id: string
   ownerId: string
   takeOff: Date
   landing: Date
@@ -32,7 +32,7 @@ export const FlightTypeDefs = gql`
   }
   
   type Flight {
-    _id: ID!
+    id: ID!
     ownerId: ID!
     takeOff: Float!
     landing: Float!

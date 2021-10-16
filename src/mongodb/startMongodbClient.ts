@@ -1,11 +1,11 @@
 import type { MongoClient } from 'mongodb'
-import type { EntityType } from '../common/types'
+import type { EntityPropsType } from '../database/DbTypes'
 import { createCollectionsIndexes } from './createCollectionsIndexes'
 
 export const startMongodbClient = async(
   client: MongoClient,
   DB_NAME: string,
-  DB_ENTITIES: Record<string, EntityType>
+  DB_ENTITIES: Record<string, EntityPropsType>
 ): Promise<MongoClient> => {
   try {
     await client.connect()

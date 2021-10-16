@@ -2,8 +2,14 @@ import { gql } from 'apollo-server-express'
 import { SalaryTableType } from '../salaryTable/SalaryTableType'
 import { ScheduleType } from '../schedule/ScheduleType'
 
+export type MeType = {
+  id: string
+  name: string
+  email: string
+}
+
 export type UserType = {
-  _id: string
+  id: string
   name: string
   email: string
   company?: string
@@ -31,7 +37,7 @@ export const UserTypeDefs = gql`
   }
   
   type User {
-    _id: ID!
+    id: ID!
     name: String!
     email: String!
     company: String
@@ -40,8 +46,8 @@ export const UserTypeDefs = gql`
   }
   
   type UpdatedUser {
-      updatedUser: User
-      updatedToken: String
+    updatedUser: User
+    updatedToken: String
   }
   
   input UserInput {

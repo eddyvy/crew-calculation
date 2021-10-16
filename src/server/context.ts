@@ -2,7 +2,7 @@ import type { Request } from 'express'
 import type { Context } from 'apollo-server-core'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../common/constants'
-import { MeType } from '../common/types'
+import type { MeType } from '../user/UserType'
 
 export const expressContext = (context: Context<{ req: Request }>): Context<{ me: MeType | null }> => {
   const { req } = context

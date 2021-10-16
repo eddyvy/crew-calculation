@@ -1,75 +1,87 @@
-import { MongoClient, ObjectId } from 'mongodb'
-import type { CrudAdapter } from '../common/types'
+import { Document, MongoClient, ObjectId } from 'mongodb'
+import type { CrudAdapter, DbEntity, DbInput, DbQuery } from '../database/DbTypes'
 
 export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapter => {
+
   const db = client.db(DB_NAME)
 
-  const parseId = <Q>(query: Q & { _id?: string }): (Q & { _id: ObjectId }) | Q => {
-    const has_id = Object.keys(query).includes('_id')
-    return (has_id)
-      ? { ...query, _id: new ObjectId(query._id) }
-      : query
+  const mapQueryIdToMongodb = (query: DbQuery & { id?: string }): (DbQuery & { _id: ObjectId }) | DbQuery => {
+    if (Object.keys(query).includes('id')) {
+      const { id, ...queryWithoutId } = query
+      return { ...queryWithoutId, _id: new ObjectId(id) } as DbQuery & { _id: ObjectId }
+    }
+    return query as DbQuery
   }
 
-  const createOne = async<I, E>(entityName: string, input: I): Promise<E | null> => {
+  const mapEntityIdFromMongodb = (entity: Document): DbEntity => {
+    const { _id, ...entityWithoutId } = entity
+    return { ...entityWithoutId, id: _id.toString() } as DbEntity
+  }
+
+  const createOne = async(entityName: string, input: DbInput): Promise<DbEntity | null> => {
     try {
       const { insertedId } = await db.collection(entityName).insertOne(input)
-      return (insertedId) ? { ...input, _id: insertedId.toString() } as unknown as E : null
+      return (insertedId) ? { ...input, id: insertedId.toString() } as DbEntity : null
     } catch (error) {
-      console.log('Error creating:', error)
+      console.log('Error in db adapter:', error)
       return null
     }
   }
 
-  const createMany = async<I, E>(entityName: string, inputs: I[]): Promise<E[] | null> => {
+  const createMany = async(entityName: string, inputs: DbInput[]): Promise<DbEntity[]> => {
     try {
       const { insertedIds, insertedCount } =  await db.collection(entityName).insertMany(inputs)
       return (insertedCount > 0)
-        ? inputs.map( (inp: I, index: number) => ({ ...inp, _id: insertedIds[index].toString() } as unknown as E))
-        : null
+        ? inputs.map((inp: DbInput, index: number) => ({ ...inp, id: insertedIds[index].toString() } as DbEntity))
+        : []
     } catch (error) {
-      console.log('Error creating:', error)
-      return null
-    }
-  }
-
-  const readOne = async<Q, E>(entityName: string, query: Q): Promise<E | null> => {
-    try {
-      const entityDb = await db.collection(entityName).findOne(parseId(query))
-      return (entityDb)
-        ? { ...entityDb, _id: entityDb._id.toString() } as unknown as E
-        : null
-    } catch (error) {
-      console.log('Error reading:', error)
-      return null
-    }
-  }
-
-  const readMany = async<Q, E>(entityName: string, query: Q): Promise<E[]> => {
-    try {
-      const entities = await db.collection(entityName).find(parseId(query)).toArray()
-      return entities.map((doc) => ({ ...doc, _id: doc._id.toString() } as unknown as E))
-    } catch (error) {
-      console.log('Error reading:', error)
+      console.log('Error in db adapter:', error)
       return []
     }
   }
 
-  const updateOne = async<Q, I, E>(entityName: string, query: Q, input: I): Promise<E | null> => {
+  const readOne = async(entityName: string, query: DbQuery): Promise<DbEntity | null> => {
     try {
-      const { value } = await db.collection(entityName).findOneAndUpdate(parseId(query), { $set: input })
-      return value && value as E
+      const entityDb = await db.collection(entityName).findOne(mapQueryIdToMongodb(query))
+      return (entityDb)
+        ? mapEntityIdFromMongodb(entityDb)
+        : null
     } catch (error) {
-      console.log('Error reading:', error)
+      console.log('Error in db adapter:', error)
       return null
     }
   }
 
-  const deleteOne = async<Q>(entityName: string, query: Q): Promise<any | null> => {
+  const readMany = async(entityName: string, query: DbQuery): Promise<DbEntity[]> => {
     try {
-      return await db.collection(entityName).deleteOne(parseId(query))
+      const entities = await db.collection(entityName).find(mapQueryIdToMongodb(query)).toArray()
+      return entities.map((ent: Document) => (mapEntityIdFromMongodb(ent)))
     } catch (error) {
-      console.log('Error reading:', error)
+      console.log('Error in db adapter:', error)
+      return []
+    }
+  }
+
+  const updateOne = async(entityName: string, query: DbQuery, input: DbInput): Promise<DbEntity | null> => {
+    try {
+      const { value } = await db.collection(entityName).findOneAndUpdate(mapQueryIdToMongodb(query), { $set: input })
+      return (value)
+        ? mapEntityIdFromMongodb(value)
+        : null
+    } catch (error) {
+      console.log('Error in db adapter:', error)
+      return null
+    }
+  }
+
+  const deleteOne = async(entityName: string, query: DbQuery): Promise<DbEntity | null> => {
+    try {
+      const { value } = await db.collection(entityName).findOneAndDelete(mapQueryIdToMongodb(query))
+      return (value)
+        ? mapEntityIdFromMongodb(value)
+        : null
+    } catch (error) {
+      console.log('Error in db adapter:', error)
       return null
     }
   }

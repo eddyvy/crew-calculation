@@ -1,7 +1,7 @@
 import type { Db } from 'mongodb'
-import type { EntityType } from '../common/types'
+import { AppEntities } from '../common/types'
 
-export const createCollectionsIndexes = async(db: Db, DB_ENTITIES: Record<string, EntityType>): Promise<void> => {
+export const createCollectionsIndexes = async(db: Db, DB_ENTITIES: AppEntities): Promise<void> => {
   Object.values(DB_ENTITIES).forEach(({ name, uniqueKey }) => {
     if (uniqueKey) {
       const uniqueOption: Record<string, number> = {}
