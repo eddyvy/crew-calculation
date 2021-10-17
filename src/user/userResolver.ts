@@ -19,7 +19,7 @@ export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
       case 'sendRecoverPasswordEmail':
         return await sendRecoverPasswordEmail(args.email, readOne)
       case 'createUser':
-        return await createUser(args.newUser, args.password, createOne)
+        return await createUser(args.userInput, args.password, createOne)
       case 'updatePassword':
         return await authRequired(
           context.me,
@@ -34,7 +34,7 @@ export const userResolver = (crudAdapter: CrudAdapter): IResolvers => {
         return await authRequired(
           context.me,
           updateUser,
-          args.updatedUser,
+          args.userInput,
           context.me?.id,
           updateOne
         )

@@ -34,7 +34,7 @@ export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
         return await authRequired(
           context.me,
           createFlight,
-          args.newFlight,
+          args.flightInput,
           context.me?.id,
           createOne
         )
@@ -44,7 +44,7 @@ export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
           updateFlightById,
           args.flightId,
           context.me?.id,
-          args.updatedFlight,
+          args.flightInput,
           updateOne
         )
       case 'getFlightsByDateTimeInterval':

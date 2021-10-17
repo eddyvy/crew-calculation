@@ -39,9 +39,13 @@ export type SalaryTableInput = {
 }
 
 export const SalaryTableTypeDefs = gql`
+  type Query {
+    getSalaryTable: SalaryTable
+  }
     
   type Mutation {
-    createSalaryTable(newSalaryTable: SalaryTableInput): SalaryTable
+    createSalaryTable(salaryTableInput: SalaryTableInput): SalaryTable
+    updateSalaryTable(salaryTableInput: SalaryTableInput): SalaryTable
   }
   
   type SalaryTable {

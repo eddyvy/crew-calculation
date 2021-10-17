@@ -29,9 +29,9 @@ export const FlightTypeDefs = gql`
   }
   
   type Mutation {
-    createFlight(newFlight: FlightInput): Flight
+    createFlight(flightInput: FlightInput): Flight
     deleteFlight(flightId: ID): Flight
-    updateFlightById(flightId: ID, updatedFlight: FlightInput): Flight
+    updateFlightById(flightId: ID, flightInput: FlightInput): Flight
   }
   
   type Flight {
