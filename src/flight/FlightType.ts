@@ -27,13 +27,13 @@ export const FlightTypeDefs = gql`
     getFlightById(flightId: ID): Flight
     getFlightsByDateTimeInterval(startTime: Float, endTime: Float): [Flight]
   }
-  
+
   type Mutation {
     createFlight(flightInput: FlightInput): Flight
-    deleteFlight(flightId: ID): Flight
+    deleteFlightById(flightId: ID): Flight
     updateFlightById(flightId: ID, flightInput: FlightInput): Flight
   }
-  
+
   type Flight {
     id: ID!
     ownerId: ID!
@@ -42,20 +42,20 @@ export const FlightTypeDefs = gql`
     departure: Airport!
     destination: Airport!
   }
-  
+
   type Airport {
     code: String!
     isBase: Boolean!
     isNational: Boolean!
   }
-  
+
   input FlightInput {
     takeOff: Float!
     landing: Float!
     departure: AirportInput!
     destination: AirportInput!
   }
-  
+
   input AirportInput {
     code: String!
     isBase: Boolean!

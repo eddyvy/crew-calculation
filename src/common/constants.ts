@@ -23,8 +23,8 @@ export const DB_ENTITIES: AppEntities = {
     name: 'salaryTables',
     uniqueKey: 'ownerId',
   },
-  SCHEDULES: {
-    name: 'schedules',
+  EVENTS: {
+    name: 'events',
     uniqueKey: null,
   },
   USERS: {

@@ -1,14 +1,10 @@
 import { gql } from 'apollo-server-express'
-import { SalaryTableType } from '../salaryTable/SalaryTableType'
-import { ScheduleType } from '../schedule/ScheduleType'
 
 export type UserType = {
   id: string
   name: string
   email: string
   company?: string
-  salaryTable?: SalaryTableType
-  schedule?: ScheduleType[]
 }
 
 export type UserInputType = {
@@ -35,8 +31,6 @@ export const UserTypeDefs = gql`
     name: String!
     email: String!
     company: String
-    salaryTable: SalaryTable
-    schedule: [Schedule]
   }
   
   type UpdatedUser {

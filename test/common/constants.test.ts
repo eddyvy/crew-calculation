@@ -13,7 +13,7 @@ describe('Constants', () => {
         uniqueKey: null,
       },
       SCHEDULES: {
-        name: 'schedules',
+        name: 'events',
         uniqueKey: null,
       },
       USERS: {

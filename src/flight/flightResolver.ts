@@ -5,7 +5,7 @@ import { authRequired } from '../validation/authRequired'
 import { createFlight } from './action/createFlight'
 import { getFlightById } from './action/getFlightById'
 import { updateFlightById } from './action/updateFlightById'
-import { deleteFlight } from './action/deleteFlight'
+import { deleteFlightById } from './action/deleteFlightById'
 import { getFlightsByDateTimeInterval } from './action/getFlightsByDateTimeInterval'
 
 export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
@@ -22,10 +22,10 @@ export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
           context.me?.id,
           readOne
         )
-      case 'deleteFlight':
+      case 'deleteFlightById':
         return await authRequired(
           context.me,
-          deleteFlight,
+          deleteFlightById,
           args.flightId,
           context.me?.id,
           deleteOne
@@ -66,7 +66,7 @@ export const flightResolver = (crudAdapter: CrudAdapter): IResolvers => {
     },
     Mutation: {
       createFlight: useFlightResolvers,
-      deleteFlight: useFlightResolvers,
+      deleteFlightById: useFlightResolvers,
       updateFlightById: useFlightResolvers,
     },
   }

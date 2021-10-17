@@ -14,7 +14,7 @@ export type EntityPropsType = {
 export type AppEntities = {
   FLIGHTS: EntityPropsType
   SALARY_TABLES: EntityPropsType
-  SCHEDULES: EntityPropsType
+  EVENTS: EntityPropsType
   USERS: EntityPropsType
 }
 
