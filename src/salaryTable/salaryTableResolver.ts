@@ -31,8 +31,8 @@ export const salaryTableResolver = (crudAdapter: CrudAdapter): IResolvers => {
         return await authRequired(
           context.me,
           updateSalaryTable,
-          context.me?.id,
           args.salaryTableInput,
+          context.me?.id,
           updateOne
         )
     }
