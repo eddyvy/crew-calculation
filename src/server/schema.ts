@@ -5,7 +5,7 @@ import type { CrudAdapter } from '../database/CrudAdapaterType'
 import { FlightTypeDefs } from '../flight/FlightType'
 import { flightResolver } from '../flight/flightResolver'
 import { SalaryTableTypeDefs } from '../salaryTable/SalaryTableType'
-import { SalaryTableResolver } from '../salaryTable/SalaryTableResolver'
+import { salaryTableResolver } from '../salaryTable/salaryTableResolver'
 import { ScheduleTypeDefs } from '../schedule/ScheduleType'
 import { ScheduleResolver } from '../schedule/ScheduleResolver'
 import { UserTypeDefs } from '../user/UserType'
@@ -22,7 +22,7 @@ export const schema = (crudAdapter: CrudAdapter): GraphQLSchema => {
 
   const resolvers = mergeResolvers([
     flightResolver(crudAdapter),
-    SalaryTableResolver,
+    salaryTableResolver(crudAdapter),
     ScheduleResolver,
     userResolver(crudAdapter),
   ])

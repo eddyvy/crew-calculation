@@ -21,7 +21,7 @@ export const DB_ENTITIES: AppEntities = {
   },
   SALARY_TABLES: {
     name: 'salaryTables',
-    uniqueKey: null,
+    uniqueKey: 'ownerId',
   },
   SCHEDULES: {
     name: 'schedules',
