@@ -1,6 +1,6 @@
 import type { IResolvers } from '@graphql-tools/utils/Interfaces'
 import type { CrudAdapter } from '../database/CrudAdapaterType'
-import { AppContext } from '../common/types'
+import type { AppContext } from '../common/types'
 import { authRequired } from '../validation/authRequired'
 import { createSalaryTable } from './action/createSalaryTable'
 import { getSalaryTable } from './action/getSalaryTable'
