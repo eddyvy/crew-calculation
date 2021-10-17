@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { DB_ENTITIES, JWT_SECRET } from '../../common/constants'
-import type { ReadOne } from '../../database/DbTypes'
+import type { ReadOne } from '../../database/CrudAdapaterType'
 import type { UserType } from '../UserType'
 
 export const authUser = async(email: string, password: string, readOne: ReadOne): Promise<string | null> => {

@@ -1,5 +1,5 @@
 import { UserInputType, UserType } from '../UserType'
-import type { UpdateOne } from '../../database/DbTypes'
+import type { UpdateOne } from '../../database/CrudAdapaterType'
 import { DB_ENTITIES, JWT_SECRET } from '../../common/constants'
 import jwt from 'jsonwebtoken'
 

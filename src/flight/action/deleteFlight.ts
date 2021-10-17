@@ -1,5 +1,5 @@
 import { FlightType } from '../FlightType'
-import type { DeleteOne } from '../../database/DbTypes'
+import type { DeleteOne } from '../../database/CrudAdapaterType'
 import { DB_ENTITIES } from '../../common/constants'
 
 export  const deleteFlight = async(

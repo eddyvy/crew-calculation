@@ -1,7 +1,7 @@
 import type { GraphQLSchema } from 'graphql/type/schema'
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge'
 import { mergeSchemas } from '@graphql-tools/schema'
-import type { CrudAdapter } from '../database/DbTypes'
+import type { CrudAdapter } from '../database/CrudAdapaterType'
 import { FlightTypeDefs } from '../flight/FlightType'
 import { flightResolver } from '../flight/flightResolver'
 import { SalaryTableTypeDefs } from '../salaryTable/SalaryTableType'

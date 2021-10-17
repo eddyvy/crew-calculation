@@ -1,5 +1,5 @@
 import type { IResolvers } from '@graphql-tools/utils/Interfaces'
-import type { CrudAdapter } from '../database/DbTypes'
+import type { CrudAdapter } from '../database/CrudAdapaterType'
 import type { AppContext } from '../common/types'
 import { authRequired } from '../validation/authRequired'
 import { sendRecoverPasswordEmail } from './action/sendRecoverPasswordEmail'

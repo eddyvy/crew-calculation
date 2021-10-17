@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import type { ReadOne } from '../../database/DbTypes'
+import type { ReadOne } from '../../database/CrudAdapaterType'
 import { DB_ENTITIES, JWT_SECRET } from '../../common/constants'
 import { sendEmail } from '../../email/sendEmail'
 import type { UserType } from '../UserType'

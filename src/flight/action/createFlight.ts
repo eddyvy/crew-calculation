@@ -1,5 +1,5 @@
 import { FlightInput, FlightType } from '../FlightType'
-import type { CreateOne } from '../../database/DbTypes'
+import type { CreateOne } from '../../database/CrudAdapaterType'
 import { DB_ENTITIES } from '../../common/constants'
 
 export const createFlight = async(

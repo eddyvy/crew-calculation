@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 import { AppEntities } from './types'
 
 const checkEnv = (envConst: (string | undefined)): string => {
-  if (!envConst) throw new Error('Env constants validation')
+  if (!envConst) throw new Error('Error in env constants validation')
   return envConst
 }
 

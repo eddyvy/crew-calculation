@@ -1,5 +1,23 @@
-import { Document, MongoClient, ObjectId } from 'mongodb'
-import type { CrudAdapter, DbEntity, DbInput, DbQuery } from '../database/DbTypes'
+import { Document, Filter, MongoClient, ObjectId } from 'mongodb'
+import type {
+  CreateMany,
+  CreateOne,
+  CrudAdapter,
+  CrudAdapterBasic,
+  DbEntity,
+  DbInput,
+  DbQuery,
+  DeleteMany,
+  DeleteOne,
+  ReadMany,
+  ReadOne,
+  UpdateMany,
+  UpdateOne
+} from '../database/CrudAdapaterType'
+import { mongodbSpecificAdapter } from './mongodbSpecificAdapter'
+import { SpecificCrudAdapter } from '../database/SpecificCrudAdapterType'
+
+export type MongodbQuery = Filter<DbEntity>
 
 export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapter => {
 
@@ -18,9 +36,10 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     return { ...entityWithoutId, id: _id.toString() } as DbEntity
   }
 
-  const createOne = async(entityName: string, input: DbInput): Promise<DbEntity | null> => {
+  const createOne: CreateOne = async(entityName: string, input: DbInput): Promise<DbEntity | null> => {
     try {
       const { insertedId } = await db.collection(entityName).insertOne(input)
+
       return (insertedId) ? { ...input, id: insertedId.toString() } as DbEntity : null
     } catch (error) {
       console.log('Error in db adapter:', error)
@@ -28,9 +47,10 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     }
   }
 
-  const createMany = async(entityName: string, inputs: DbInput[]): Promise<DbEntity[]> => {
+  const createMany: CreateMany = async(entityName: string, inputs: DbInput[]): Promise<DbEntity[]> => {
     try {
       const { insertedIds, insertedCount } =  await db.collection(entityName).insertMany(inputs)
+
       return (insertedCount > 0)
         ? inputs.map((inp: DbInput, index: number) => ({ ...inp, id: insertedIds[index].toString() } as DbEntity))
         : []
@@ -40,9 +60,10 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     }
   }
 
-  const readOne = async(entityName: string, query: DbQuery): Promise<DbEntity | null> => {
+  const readOne: ReadOne = async(entityName: string, query: DbQuery): Promise<DbEntity | null> => {
     try {
       const entityDb = await db.collection(entityName).findOne(mapQueryIdToMongodb(query))
+
       return (entityDb)
         ? mapEntityIdFromMongodb(entityDb)
         : null
@@ -52,19 +73,25 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     }
   }
 
-  const readMany = async(entityName: string, query: DbQuery): Promise<DbEntity[]> => {
+  const readMany: ReadMany = async(entityName: string, query: DbQuery): Promise<DbEntity[]> => {
     try {
-      const entities = await db.collection(entityName).find(mapQueryIdToMongodb(query)).toArray()
-      return entities.map((ent: Document) => (mapEntityIdFromMongodb(ent)))
+      const dbEntities = await db.collection(entityName).find(mapQueryIdToMongodb(query)).toArray()
+
+      return dbEntities.map((ent: Document) => (mapEntityIdFromMongodb(ent)))
     } catch (error) {
       console.log('Error in db adapter:', error)
       return []
     }
   }
 
-  const updateOne = async(entityName: string, query: DbQuery, input: DbInput): Promise<DbEntity | null> => {
+  const updateOne: UpdateOne = async(entityName: string, query: DbQuery, input: DbInput): Promise<DbEntity | null> => {
     try {
-      const { value } = await db.collection(entityName).findOneAndUpdate(mapQueryIdToMongodb(query), { $set: input })
+      const { value } = await db.collection(entityName).findOneAndUpdate(
+        mapQueryIdToMongodb(query),
+        { $set: input },
+        { upsert: false }
+      )
+
       return (value)
         ? mapEntityIdFromMongodb(value)
         : null
@@ -74,9 +101,28 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     }
   }
 
-  const deleteOne = async(entityName: string, query: DbQuery): Promise<DbEntity | null> => {
+  const updateMany: UpdateMany = async(entityName: string, query: DbQuery, input: DbInput): Promise<DbEntity[]> => {
+    try {
+      const mappedQuery = mapQueryIdToMongodb(query)
+      const { matchedCount } = await db.collection(entityName).updateMany(
+        mappedQuery,
+        { $set: input },
+        { upsert: false }
+      )
+
+      return (matchedCount > 0)
+        ? readMany(entityName, { ...mappedQuery, ...input })
+        : []
+    } catch (error) {
+      console.log('Error in db adapter:', error)
+      return []
+    }
+  }
+
+  const deleteOne: DeleteOne = async(entityName: string, query: DbQuery): Promise<DbEntity | null> => {
     try {
       const { value } = await db.collection(entityName).findOneAndDelete(mapQueryIdToMongodb(query))
+
       return (value)
         ? mapEntityIdFromMongodb(value)
         : null
@@ -86,12 +132,33 @@ export const mongodbAdapter = (client: MongoClient, DB_NAME: string): CrudAdapte
     }
   }
 
-  return {
+  const deleteMany: DeleteMany = async(entityName: string, query: DbQuery): Promise<DbEntity[]> => {
+    try {
+      const mappedQuery = mapQueryIdToMongodb(query)
+      const entities = await readMany(entityName, mappedQuery)
+      const { deletedCount } = await db.collection(entityName).deleteMany(mappedQuery)
+
+      return (deletedCount > 0)
+        ? entities
+        : []
+    } catch (error) {
+      console.log('Error in db adapter:', error)
+      return []
+    }
+  }
+
+  const mongoCrud: CrudAdapterBasic = {
     createOne,
     createMany,
     readOne,
     readMany,
     updateOne,
+    updateMany,
     deleteOne,
+    deleteMany,
   }
+
+  const mongoSpecificCrud: SpecificCrudAdapter = mongodbSpecificAdapter(mongoCrud)
+
+  return { ...mongoCrud, ...mongoSpecificCrud }
 }

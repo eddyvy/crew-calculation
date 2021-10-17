@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import type { ReadOne, UpdateOne } from '../../database/DbTypes'
+import type { ReadOne, UpdateOne } from '../../database/CrudAdapaterType'
 import { DB_ENTITIES, SALT_ROUNDS } from '../../common/constants'
 import type { UserType } from '../UserType'
 

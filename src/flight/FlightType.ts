@@ -25,6 +25,7 @@ export type FlightInput = {
 export const FlightTypeDefs = gql`
   type Query {
     getFlightById(flightId: ID): Flight
+    getFlightsByDateTimeInterval(startTime: Float, endTime: Float): [Flight]
   }
   
   type Mutation {

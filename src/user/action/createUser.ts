@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { DB_ENTITIES, SALT_ROUNDS } from '../../common/constants'
-import type { CreateOne } from '../../database/DbTypes'
+import type { CreateOne } from '../../database/CrudAdapaterType'
 import type { UserInputType, UserType } from '../UserType'
 
 export const createUser = async(newUser: UserInputType, password: string, createOne: CreateOne): Promise<(UserType | null)> => {

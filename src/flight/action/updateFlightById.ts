@@ -1,5 +1,5 @@
 import type { FlightInput, FlightType } from '../FlightType'
-import type { UpdateOne } from '../../database/DbTypes'
+import type { UpdateOne } from '../../database/CrudAdapaterType'
 import { DB_ENTITIES } from '../../common/constants'
 
 export const updateFlightById = async(
