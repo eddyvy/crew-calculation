@@ -1,6 +1,13 @@
 import { gql } from 'apollo-server-express'
 
-export type EventEnumType = 'standby' | 'reserve' | 'rest' | 'free'
+export type EventEnumType = 'standby'
+  | 'office'
+  | 'freeDayLost'
+  | 'training'
+  | 'trainingCrm'
+  | 'reserve'
+  | 'rest'
+  | 'free'
 
 export type EventType = {
   id: number
@@ -44,6 +51,10 @@ export const EventTypeDefs = gql`
 
   enum EventEnumType {
     standby
+    office
+    freeDayLost
+    training
+    trainingCrm
     reserve
     rest
     free

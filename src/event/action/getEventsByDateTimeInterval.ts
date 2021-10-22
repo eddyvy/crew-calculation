@@ -8,8 +8,8 @@ export const getEventsByDateTimeInterval = async(
   ownerId: string,
   readBetweenValues: ReadBetweenValues
 ): Promise<EventType[]> => {
-  const takeOffFilter = { field: 'eventStart', min: startTime, max: endTime }
-  const landingFilter = { field: 'eventFinish', min: startTime, max: endTime }
+  const takeOffFilter = { field: 'eventStart', min: startTime.valueOf(), max: endTime.valueOf() }
+  const landingFilter = { field: 'eventFinish', min: startTime.valueOf(), max: endTime.valueOf() }
 
   return await readBetweenValues(DB_ENTITIES.EVENTS.name, { ownerId }, takeOffFilter, landingFilter) as EventType[]
 }

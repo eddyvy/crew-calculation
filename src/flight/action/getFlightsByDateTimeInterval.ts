@@ -8,8 +8,8 @@ export const getFlightsByDateTimeInterval = async(
   ownerId: string,
   readBetweenValues: ReadBetweenValues
 ): Promise<FlightType[]> => {
-  const takeOffFilter = { field: 'takeOff', min: startTime, max: endTime }
-  const landingFilter = { field: 'landing', min: startTime, max: endTime }
+  const takeOffFilter = { field: 'takeOff', min: startTime.valueOf(), max: endTime.valueOf() }
+  const landingFilter = { field: 'landing', min: startTime.valueOf(), max: endTime.valueOf() }
 
   return await readBetweenValues(DB_ENTITIES.FLIGHTS.name, { ownerId }, takeOffFilter, landingFilter) as FlightType[]
 }

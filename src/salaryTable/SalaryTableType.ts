@@ -38,6 +38,24 @@ export type SalaryTableInput = {
   dietInternationalNoSleep?: number
 }
 
+export type SalaryCalculation = {
+  base: number
+  totalFT: number
+  totalSB: number
+  totalOffice: number
+  totalFreeLost: number
+  totalTH: number
+  totalTHCrm: number
+  totalSCC: number
+  totalSpF: number
+  totalPlusBB: number
+  totalNatD: number
+  totalIntD: number
+  totalNatNSD: number
+  totalIntNSD: number
+  total: number
+}
+
 export const SalaryTableTypeDefs = gql`
   type Query {
     getSalaryTable: SalaryTable
@@ -66,6 +84,24 @@ export const SalaryTableTypeDefs = gql`
     dietInternational: Float
     dietNationalNoSleep: Float
     dietInternationalNoSleep: Float
+  }
+  
+  type SalaryCalculation {
+    base: Float
+    totalFT: Float
+    totalSB: Float
+    totalOffice: Float
+    totalFreeLost: Float
+    totalTH: Float
+    totalTHCrm: Float
+    totalSCC: Float
+    totalSpF: Float
+    totalPlusBB: Float
+    totalNatD: Float
+    totalIntD: Float
+    totalNatNSD: Float
+    totalIntNSD: Float
+    total: Float
   }
   
   input SalaryTableInput {

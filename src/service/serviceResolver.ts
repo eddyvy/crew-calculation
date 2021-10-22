@@ -12,8 +12,8 @@ export const serviceResolver = (crudAdapter: CrudAdapter): IResolvers => {
         return await authRequired(
           context.me,
           getSalaryCalculation,
-          args.startDate,
-          args.endDate,
+          args.month,
+          args.year,
           context.me?.id,
           crudAdapter
         )

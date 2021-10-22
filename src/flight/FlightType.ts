@@ -6,6 +6,8 @@ export type Airport = {
   isNational: boolean
 }
 
+export type Role = 'CC' | 'SCC' | 'FO' | 'CPT' | 'PAX'  | 'BackBase' | 'Special' | 'Ground'
+
 export type FlightType = {
   id: string
   ownerId: string
@@ -13,6 +15,7 @@ export type FlightType = {
   landing: Date
   departure: Airport
   destination: Airport
+  role: Role
 }
 
 export type FlightInput = {
@@ -20,6 +23,7 @@ export type FlightInput = {
   landing: Date
   departure: Airport
   destination: Airport
+  role: Role
 }
 
 export const FlightTypeDefs = gql`
@@ -41,6 +45,7 @@ export const FlightTypeDefs = gql`
     landing: Float!
     departure: Airport!
     destination: Airport!
+    role: Role!
   }
 
   type Airport {
@@ -48,12 +53,24 @@ export const FlightTypeDefs = gql`
     isBase: Boolean!
     isNational: Boolean!
   }
+  
+  enum Role {
+    CC
+    SCC
+    FO
+    CPT
+    PAX
+    BackBase
+    Special
+    Ground # Transport by ground
+  }
 
   input FlightInput {
     takeOff: Float!
     landing: Float!
     departure: AirportInput!
     destination: AirportInput!
+    role: Role!
   }
 
   input AirportInput {
