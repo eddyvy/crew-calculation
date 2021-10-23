@@ -6,9 +6,15 @@
   "scripts": {
     "start": "node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
-    "build": "tsc",
+    "build": "tsc -p tsconfig-build.json && npm run build --prefix ./svelte",
     "test": "jest --verbose",
-    "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx"
+    "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
+    "dev:app":"npm run dev --prefix ./svelte",
+    "build:app": "npm run build --prefix ./svelte",
+    "preview:app": "npm run preview --prefix ./svelte",
+    "check:app": "npm run check --prefix ./svelte",
+    "check:watch:app": "npm run check:watch --prefix ./svelte",
+    "lint:app": "npm run lint --prefix ./svelte"
   },
   "author": "eddyvy",
   "license": "MIT",
