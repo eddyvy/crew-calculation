@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./build/index.js",
     "dev": "ts-node-dev ./src/index.ts",
-    "build": "tsc",
+    "build": "tsc -p tsconfig-build.json && npm run build --prefix ./svelte",
     "test": "jest --verbose",
     "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx"
   },
