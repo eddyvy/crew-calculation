@@ -1,18 +1,12 @@
-<script context="module">
+<script>
+  import { token } from '../store'
 
-import { token } from '../store'
+  console.log($token)
 
-export async function load({ page, fetch, session, stuff }) {
-
-    return (token) && {
-      status: 301,
-      redirect: '/auth'
-    }
-  }
 </script>
 
 <svelte:head>
-    <title>Crew Calculation - VIP</title>
+  <title>Crew Calculation - VIP</title>
 </svelte:head>
 
 <h1>Página principal, eres VIP</h1>

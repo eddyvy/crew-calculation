@@ -9,7 +9,7 @@
     "build": "tsc -p tsconfig-build.json && npm run build --prefix ./svelte",
     "test": "jest --verbose",
     "eslint": "npx eslint . --ext .js,.jsx,.ts,.tsx",
-    "dev:app":"npm run dev --prefix ./svelte",
+    "dev:app": "npm run dev --prefix ./svelte",
     "build:app": "npm run build --prefix ./svelte",
     "preview:app": "npm run preview --prefix ./svelte",
     "check:app": "npm run check --prefix ./svelte",
@@ -40,6 +40,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.16",
     "apollo-server-core": "^3.3.0",
     "apollo-server-express": "^3.3.0",
     "bcrypt": "^5.0.1",
